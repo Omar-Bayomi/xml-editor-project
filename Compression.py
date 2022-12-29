@@ -102,6 +102,21 @@ class HuffmanCompression:
             output.write(final_bytes)
         print("succesfully Done")
         return output_path
+    def decompress(self, input_path):
+        filename, file_extension = os.path.splitext(input_path)
+        output_path = filename + '_decompressed' + '.xml'
+        with open(input_path, 'rb') as file, open(output_path, 'w') as output:
+            bit_string = ''
+            byte = file.read(1)
+            while byte:
+                byte = ord(byte)
+                bits = bin(byte)[2:].rjust(8, '0')
+                bit_string += bits
+                byte = file.read(1)
 
+            actual_text = self.__Remove_Padding(bit_string)
+            decompressed_text = self.__Decompress_Text(actual_text)
+            output.write(decompressed_text)
+        return
 
         return
