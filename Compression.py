@@ -100,7 +100,7 @@ class HuffmanCompression:
             byte_array = self.__build_byte_array(padded_text)
             final_bytes = bytes(byte_array)
             output.write(final_bytes)
-        print("succesfully done")
+        print("succesfully Done")
         return output_path
 
 
