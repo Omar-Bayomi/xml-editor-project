@@ -100,8 +100,27 @@ class HuffmanCompression:
             byte_array = self.__build_byte_array(padded_text)
             final_bytes = bytes(byte_array)
             output.write(final_bytes)
-        print("succesfully Done")
+        print("succesfully done")
         return output_path
+
+    def __Remove_Padding(self, text):
+        padded_info = text[:8]
+        extra_padding = int(padded_info, 2)
+        text = text[8:]
+        padding_removed_text = text[:-1 * extra_padding]
+        return padding_removed_text
+
+    def __Decompress_Text(self, text):
+        decoded_text = ''
+        current_bits = ''
+        for bit in text:
+            current_bits += bit
+            if current_bits in self.__reversecode:
+                character = self.__reversecode[current_bits]
+                decoded_text += character
+                current_bits = ""
+        return decoded_text
+
     def decompress(self, input_path):
         filename, file_extension = os.path.splitext(input_path)
         output_path = filename + '_decompressed' + '.xml'
@@ -117,6 +136,4 @@ class HuffmanCompression:
             actual_text = self.__Remove_Padding(bit_string)
             decompressed_text = self.__Decompress_Text(actual_text)
             output.write(decompressed_text)
-        return
-
         return
