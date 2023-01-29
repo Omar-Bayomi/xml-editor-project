@@ -1,173 +1,63 @@
-import re
+import pandas as pd
+import networkx as nx
 import numpy as np
+import scipy
+from pyvis.network import Network
+import community as community_louvain
+import matplotlib.pyplot as plt
+import uuid
 
 
-class Topic:
+def directed_visuals(users):
+    # Calculate all possible user combinations
+    source = []
+    target = []
+    for user in users:
+        for follower in users[user].followers:
+            source.append(users[user].id)
+            target.append(follower.id)
 
-    def __init__(self):
-        self.name = ""
-
-    @property
-    def Name(self):
-        return self.name
-
-    @Name.setter
-    def Name(self, value):
-        self.name = value
-
-
-class Post:
-    def __init__(self):
-        self.topics = []
-        self.body = None
-
-    @property
-    def Body(self):
-        return self.body
-
-    @Body.setter
-    def Body(self, value):
-        self.body = value
-
-    @property
-    def Topics(self):
-        return self.topics
-
-    @Topics.setter
-    def Topics(self, value):
-        self.topics.append(value)
+    df = pd.DataFrame(np.array([source, target]).T, columns=['Source', 'Target'])
+    # df=pd.DataFrame(np.array([["A","B",50],["B","A",15],["C","A",30],["D","A",23],["D","E",53],["F","B",20],["A","G",16],["H","A",12],["E","A",22],["I","J",30],["F","I",10000],["J","E",1]]),columns=["Source","Target","Value"])
+    graph = nx.from_pandas_edgelist(df, source="Source", target="Target", edge_attr=None, create_using=nx.DiGraph())
+    plt.figure(figsize=(10, 10))
+    pos = nx.kamada_kawai_layout(graph)
+    node_degree = dict(graph.degree)
+    nx.draw(graph, with_labels=True, node_color="skyblue", edge_cmap=plt.cm.Blues, pos=pos,
+            node_size=[v * 100 for v in node_degree.values()])
+    FileName = uuid.uuid4().hex
+    plt.savefig(FileName + ".png")
+    network = Network(width="1000px", height="700px", bgcolor="#222222", font_color="white",directed=True)
+    network.from_nx(graph)
+    network.show(FileName + ".html")
+    return FileName + ".png"
 
 
-class User:
-    def __init__(self):
-        self.posts = []
-        self.name = ""
-        self.id = 0
-        self.followers = []
+def undirected_visuals(users):
+    # Calculate all possible user combinations
+    combinations = []
+    for user in users:
+        for follower in users[user].followers:
+            combinations.append([users[user].id, follower.id])
 
-    @property
-    def Posts(self):
-        return self.posts
+    # Calculate the frequency of same combination an obtain arr which is same as combinations but with the frequency
+    # added to each list
 
-    @Posts.setter
-    def Posts(self, value):
-        self.posts.append(value)
+    df = pd.Series(combinations).value_counts().sort_index().reset_index().reset_index(drop=True)
+    df.columns = ['Element', 'Frequency']
+    df.apply(lambda row: row["Element"].append(row["Frequency"]), axis=1)
+    arr = list(df["Element"])
 
-    @property
-    def Followers(self):
-        return self.followers
+    df = pd.DataFrame(arr, columns=["Source", "Target", "Value"])
 
-    @Followers.setter
-    def Followers(self, value):
-        self.followers.append(value)
-
-    @property
-    def Name(self):
-        return self.name
-
-    @Name.setter
-    def Name(self, value):
-        self.name = value
-
-    @property
-    def Id(self):
-        return self.id
-
-    @Id.setter
-    def Id(self, value):
-        self.id = value
-
-
-class SocialNetwork:
-    def __init__(self, FilePath):
-        self.__users = SocialNetwork.ParseXml(FilePath)
-
-    @property
-    def Graph(self):
-        return self.__users
-
-    @staticmethod
-    def ParseXml(FilePath):
-        xmlstring = ""
-        tags = {}
-        UsersDictionary = {}
-
-        with open(FilePath, 'r') as f:
-            xmlstring = f.read()
-            for tag in re.finditer("(<.[^(><.)]+>)", xmlstring):
-                if tags is None:
-                    break
-                if tag.group() not in tags.keys():
-                    tags.update({tag.group(): [tag.span()]})
-                else:
-                    tags[tag.group()].append(tag.span())
-        f.close()
-
-        # print(tags)
-        user_id = -1
-        user_name = -1
-        user_posts = 0
-        user_topics = 0
-        user_followers = 0
-        for _ in tags["<user>"]:
-            user_id += 1
-            user_name += 1
-
-            (_, start) = tags["<id>"][user_id]
-            (end, _) = tags["</id>"][user_id]
-            (userEnd, _) = tags["</user>"][user_name]
-            Id = xmlstring[start:end]
-            user = None
-            if Id in UsersDictionary:
-                user = UsersDictionary[Id]
-            else:
-                user = User()
-                user.id = Id
-                UsersDictionary.update({user.id: user})
-
-            (_, start) = tags["<name>"][user_name]
-            (end, _) = tags["</name>"][user_name]
-            name = xmlstring[start:end]
-            user.name = name
-
-            while user_posts < len(tags["<post>"]):
-                (_, start) = tags["<post>"][user_posts]
-                (postEnd, _) = tags["</post>"][user_posts]
-
-                if start >= userEnd:
-                    break
-                (_, start) = tags["<body>"][user_posts]
-                (end, _) = tags["</body>"][user_posts]
-                post = Post()
-                user.posts.append(post)
-                post.body = xmlstring[start:end]
-                while user_topics < len(tags["<post>"]):
-                    (_, start) = tags["<topic>"][user_topics]
-                    (end, _) = tags["</topic>"][user_topics]
-                    if start >= postEnd:
-                        break
-                    post.topics.append(xmlstring[start:end])
-                    user_topics += 1
-
-                user_posts += 1
-
-            while user_followers < len(tags["<follower>"]):
-                (_, start) = tags["<follower>"][user_followers]
-                (end, _) = tags["</follower>"][user_followers]
-                if start >= userEnd:
-                    break
-                user_id += 1
-                (_, start) = tags["<id>"][user_id]
-                (end, _) = tags["</id>"][user_id]
-                Id = xmlstring[start:end]
-                follower = None
-                if Id in UsersDictionary:
-                    follower = UsersDictionary[Id]
-                else:
-                    follower = User()
-                    follower.id = Id
-                    UsersDictionary.update({follower.id: follower})
-                user.followers.append(follower)
-                user_followers += 1
-        return UsersDictionary
-
+    # If you want to test bigger arrays and viasualize it comment the above code and remove the comment from the
+    # bottom code df=pd.DataFrame(np.array([["A","B",50],["B","A",15],["C","A",30],["D","A",23],["D","E",53],["F",
+    # "B",20],["A","G",16],["H","A",12],["E","A",22],["I","J",30],["F","I",10000],["J","E",1]]),columns=["Source",
+    # "Target","Value"])
+    FileName = uuid.uuid4().hex
+    graph = nx.from_pandas_edgelist(df, source="Source", target="Target", edge_attr="Value", create_using=nx.Graph())
+    node_degree = dict(graph.degree)
+    network = Network(width="1000px", height="700px", bgcolor="#222222", font_color="white")
+    network.from_nx(graph)
+    network.show(FileName + ".html")
+    return FileName
