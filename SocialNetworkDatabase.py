@@ -170,3 +170,55 @@ class SocialNetwork:
                 user.followers.append(follower)
                 user_followers += 1
         return UsersDictionary
+
+    def post_search(self, searchString):
+        all_posts = []
+        for user in self.__users.keys():
+            for post in self.__users[user].posts:
+                for topic in post.topics:
+                    if topic.find(searchString) != -1:
+                        all_posts.append(post)
+        return all_posts
+
+    def most_influencer(self):
+        user_id = []
+        num_of_influence = []
+
+        for user in self.__users.keys():
+            user_id.append(user)
+            num_of_influence.append(len(self.__users[user].followers))
+        sorted_indices_ascending = np.argsort(num_of_influence)
+        most_influence_index = sorted_indices_ascending[-1]
+        most_influenced_id = user_id[most_influence_index]
+
+        return self.__users[most_influenced_id]
+
+    def mutual_followers(self, userId1, userId2):
+        user1 = self.__users[str(userId1)]
+        user2 = self.__users[str(userId2)]
+        u1 = set(user1.followers)
+        u2 = set(user2.followers)
+        mutuals = set(u1).intersection(set(u2))
+        return list(set(mutuals))
+
+    def most_active(self):
+        user_id = []
+        num_of_followings = []  # how many __users does each user follow
+
+        for user1 in self.__users.keys():
+            count = 0
+            user_id.append(user1)
+
+            for user2 in self.__users.keys():  # remaining __users
+                user2_has_user1 = [follower_of_user2 for follower_of_user2 in self.__users[user2].followers if
+                                   follower_of_user2 == self.__users[user1]]
+                count += len(user2_has_user1)  # if u find user1 in user2 followers list increment
+
+            num_of_followings.append(count)
+        sorted_indices_acsending = np.argsort(num_of_followings)
+        most_followings_index = sorted_indices_acsending[-1]
+        most_followings_id = user_id[most_followings_index]
+
+        return self.__users[most_followings_id]
+        # num_of_influencers.append(len(__users[user].followers))
+        pass
