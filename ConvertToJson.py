@@ -1,6 +1,10 @@
 JsonData = ""
 
-
+"""
+    "ConvertToJson function" 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
 def ConvertToJson(Root):
     global JsonData
     JsonData = "{"
