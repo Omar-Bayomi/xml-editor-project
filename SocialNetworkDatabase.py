@@ -85,7 +85,11 @@ class SocialNetwork:
     @property
     def Graph(self):
         return self.__users
-
+"""
+    "ParseXml function 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
     @staticmethod
     def ParseXml(FilePath):
         xmlstring = ""
@@ -170,7 +174,11 @@ class SocialNetwork:
                 user.followers.append(follower)
                 user_followers += 1
         return UsersDictionary
-
+"""
+    "post_search function" 
+    Time complexity     = 𝑶(𝒎𝒏𝒌)
+    space complexity    = 𝑶(𝒎) 
+"""
     def post_search(self, searchString):
         all_posts = []
         for user in self.__users.keys():
@@ -179,7 +187,11 @@ class SocialNetwork:
                     if topic.find(searchString) != -1:
                         all_posts.append(post)
         return all_posts
-
+"""
+    "most_influencer function" 
+    Time complexity     = 𝑶(𝒏 𝒍𝒐𝒈𝒏)
+    space complexity    = 𝑶(𝒏) 
+"""
     def most_influencer(self):
         user_id = []
         num_of_influence = []
@@ -192,7 +204,11 @@ class SocialNetwork:
         most_influenced_id = user_id[most_influence_index]
 
         return self.__users[most_influenced_id]
-
+"""
+    "mutual_followers function" 
+    Time complexity     = 𝑶(𝒎 + 𝒏)
+    space complexity    = 𝑶(𝒎 + 𝒏) 
+"""
     def mutual_followers(self, userId1, userId2):
         user1 = self.__users[str(userId1)]
         user2 = self.__users[str(userId2)]
@@ -200,7 +216,11 @@ class SocialNetwork:
         u2 = set(user2.followers)
         mutuals = set(u1).intersection(set(u2))
         return list(set(mutuals))
-
+"""
+    "most_active function" 
+    Time complexity     = 𝑶(𝒏^𝟐)
+    space complexity    = 𝑶(𝒏) 
+"""
     def most_active(self):
         user_id = []
         num_of_followings = []  # how many __users does each user follow
