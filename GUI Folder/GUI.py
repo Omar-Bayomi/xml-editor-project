@@ -62,13 +62,17 @@ class Ui_Form(object):
 
 
     def setupUi(self, Form):
+        
         Form.setObjectName("Form")
+        
         Form.resize(366, 300)
+        
+        
         self.widget = QtWidgets.QWidget(Form)
-        self.widget.setGeometry(QtCore.QRect(240, 7, 110, 291))
+        self.widget.setGeometry(20, 20, 600, 600)
         self.widget.setObjectName("widget")
+        
         self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.pushButton = QtWidgets.QPushButton(self.widget)
         self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
@@ -79,6 +83,7 @@ class Ui_Form(object):
         self.verticalLayout.addWidget(self.pushButton)
         self.pushButton_2 = QtWidgets.QPushButton(self.widget)
         self.pushButton_2.setObjectName("pushButton_2")
+ 
         self.pushButton_2.clicked.connect(self.button_clicked_errorCorrect)
         self.verticalLayout.addWidget(self.pushButton_2)
         self.pushButton_3 = QtWidgets.QPushButton(self.widget)
