@@ -27,25 +27,25 @@ string Minify(string* XML_String)
 """
 def Minify(XML_String):
     M_String = ""
-    for i in range(len(XML_String)):
-        if XML_String[i] == '\n':
+    for i in range(len(XML_String)): #loop to search character by character in xml
+        if XML_String[i] == '\n':    #if character equal '\n' so ignore it 
             continue
-        elif XML_String[i] == ' ':
-            if ('A' <= XML_String[i + 1] <= 'Z') or ('a' <= XML_String[i + 1] <= 'z'):
+        elif XML_String[i] == ' ':  #if character equal ' ' so check the next character
+            if ('A' <= XML_String[i + 1] <= 'Z') or ('a' <= XML_String[i + 1] <= 'z'): #if character equal to alphabet letters so add ' ' to M_String
                 M_String = M_String + XML_String[i]
         else:
-            M_String = M_String + XML_String[i]
-    return M_String
+            M_String = M_String + XML_String[i] #otherwise add the character
+    return M_String #return the string
 """
     "Formatting function" 
     Time complexity     = O(n)
     space complexity    = O(n) 
 """
 def format_xml(XML_String):
-    M_String = Minify(XML_String)
-    lvl = 0
-    result = ""
-    for i in range(len(M_String)):
+    M_String = Minify(XML_String)       #call miniyfing funtion O(n)
+    lvl = 0                             #Number of \t to be added 
+    result = ""                    
+    for i in range(len(M_String)):      #loop to search character by character in xml
         if M_String[i] == '<' and M_String[i+1] == '/':
             lvl -= 1
             result += (('\n' + ('\t' * lvl)) if result[-1] == '>' else '') + M_String[i]
