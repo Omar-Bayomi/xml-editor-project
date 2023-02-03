@@ -51,7 +51,11 @@ class TreeNode:
     @Parent.setter
     def Parent(self, value):
         self.__Parent = value
-
+"""
+    "ParseXml function 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
     @staticmethod
     def ParseXml(FilePath):
         xmlstring = ""
