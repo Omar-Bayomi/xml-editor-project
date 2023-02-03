@@ -7,6 +7,7 @@ import community as community_louvain
 import matplotlib.pyplot as plt
 import uuid
 
+
 """
     "directed_visuals function" 
     Time complexity     = O(n^2)
