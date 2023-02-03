@@ -19,6 +19,12 @@ string Minify(string* XML_String)
 	return M_string ;
 }
 """
+
+"""
+    "Minify function 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
 def Minify(XML_String):
     M_String = ""
     for i in range(len(XML_String)):
@@ -30,7 +36,11 @@ def Minify(XML_String):
         else:
             M_String = M_String + XML_String[i]
     return M_String
-
+"""
+    "Formatting function" 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
 def format_xml(XML_String):
     M_String = Minify(XML_String)
     lvl = 0
@@ -45,11 +55,3 @@ def format_xml(XML_String):
         else:
             result += M_String[i]
     return result
-
-import sys
-print("Enter the data")
-data = sys.stdin.read()   # Use Ctrl d to stop the input
-print(data)
-x = Minify(data)
-print(x)
-print(format_xml(x))
