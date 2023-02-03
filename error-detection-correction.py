@@ -4,6 +4,11 @@ class tag:
         self.name = name
         self.line_num = line_num
 
+"""
+    "error_check" 
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
 # opening the text file
 def error_check(xml_file):
     with open(xml_file, 'r') as file:
@@ -110,7 +115,11 @@ def error_check(xml_file):
             
 
                 
-
+"""
+    "error_correction function"
+    Time complexity     = O(n)
+    space complexity    = O(n) 
+"""
 def error_correction(xml_file ):
     
     with open(xml_file, 'r') as file:
