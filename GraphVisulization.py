@@ -7,6 +7,11 @@ import community as community_louvain
 import matplotlib.pyplot as plt
 import uuid
 
+"""
+    "directed_visuals function" 
+    Time complexity     = O(n^2)
+    space complexity    = O(n^2) 
+"""
 
 def directed_visuals(users):
     # Calculate all possible user combinations
@@ -32,7 +37,11 @@ def directed_visuals(users):
     network.show(FileName + ".html")
     return FileName + ".png"
 
-
+"""
+    "undirected_visuals function" 
+    Time complexity     = O(n^2)
+    space complexity    = O(n^2) 
+"""
 def undirected_visuals(users):
     # Calculate all possible user combinations
     combinations = []
