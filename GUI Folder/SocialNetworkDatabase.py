@@ -182,7 +182,7 @@ class SocialNetwork:
                 for post in self.__users[user].posts:
                     for topic in post.topics:
                         if topic.strip()==searchString:
-                            all_posts.append(post)
+                            all_posts.append(post.body)
 
             
             output.write(str(all_posts))
