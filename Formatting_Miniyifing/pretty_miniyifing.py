@@ -27,7 +27,7 @@ string Minify(string* XML_String)
 """
 def Minify(XML_String):
     M_String = ""
-    for i in range(len(XML_String)): #loop to search character by character in xml
+    for i in range(len(XML_String.strip())): #loop to search character by character in xml
         if XML_String[i] == '\n':    #if character equal '\n' so ignore it 
             continue
         elif XML_String[i] == ' ':  #if character equal ' ' so check the next character
