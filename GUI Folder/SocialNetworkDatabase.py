@@ -202,8 +202,8 @@ class SocialNetwork:
             sorted_indices_ascending = np.argsort(num_of_influence)
             most_influence_index = sorted_indices_ascending[-1]
             most_influenced_id = user_id[most_influence_index]
-            output.write(str(self.__users[most_influenced_id]))
-            return self.__users[most_influenced_id]
+            output.write(str(self.__users[most_influenced_id].name))
+            return self.__users[most_influenced_id].name
 
     def mutual_followers(self, userId1, userId2,path):
         filename, file_extension = os.path.splitext(path)
@@ -214,8 +214,9 @@ class SocialNetwork:
             u1 = set(user1.followers)
             u2 = set(user2.followers)
             mutuals = u1.intersection(list(u2))
-            output.write(str(list(set(mutuals))))
-            return list(set(mutuals))
+            names=[mutual.name for mutual in mutuals]
+            output.write(str(list(set(names))))
+            return list(set(names))
         
 
     def  most_influencer(self,path):
@@ -238,6 +239,6 @@ class SocialNetwork:
             sorted_indices_acsending = np.argsort(num_of_followings)
             most_followings_index = sorted_indices_acsending[-1]
             most_followings_id = user_id[most_followings_index]
-            output.write(str(self.__users[most_followings_id]))
-            return self.__users[most_followings_id]
+            output.write(str(self.__users[most_followings_id].name))
+            return self.__users[most_followings_id].name
 
