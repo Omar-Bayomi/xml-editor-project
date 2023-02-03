@@ -83,7 +83,11 @@ class HuffmanCompression:
             byte = padded_text[i:i + 8]
             byte_array.append(int(byte, 2))
         return byte_array
-
+"""
+    "Compression function"
+    Time complexity     = 𝑶(𝒏 𝒍𝒐𝒈 𝒏)
+    space complexity    = O(n) 
+"""
     def Compression(self):
         # text = 'fdhkjsjfjbsknfhdjklsfjhgirjeodkfvbhjgrefjd'
         filename, file_extension = os.path.splitext(self.path)
@@ -121,6 +125,11 @@ class HuffmanCompression:
                 current_bits = ""
         return decoded_text
 
+"""
+    "decompress function"
+    Time complexity     = 𝑶(𝒏 𝒍𝒐𝒈 𝒏)
+    space complexity    = O(n) 
+"""
     def decompress(self, input_path):
         filename, file_extension = os.path.splitext(input_path)
         output_path = filename + '_decompressed' + '.xml'
