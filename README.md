@@ -212,6 +212,15 @@ Same for `ridge_regression_model = Ridge(alpha=1.0)` and `xgboost_regression_mod
 Linear regression  | 59% 
 Ridge regression| 50%
 xgboost regression |91%
+Stacked model  | 90% 
+```
+knn_pipeline = Pipeline([
+    ('imputer', SimpleImputer(strategy='mean')),
+    ('scaler', StandardScaler()),
+    ('pca', PCA(n_components=0.95, random_state=42)),
+    ('regressor', StackedRegressor())
+])
+```
 
 **Classification :**
 
@@ -234,4 +243,4 @@ xgb Classification |88%
 
 ## Deployment
 
-Once we performed the pipelines, we provided detailed steps and code for deploying the model. We created a **streamlit app** with a simple user interface to allow users to access the model to enter the loans data and make predictions about them.
+Once we performed the pipelines, we provided detailed steps and code for deploying the model. Our team has developed an intuitive and user-friendly Streamlit application that serves as a powerful tool for making predictions on loan data. This application boasts a simple yet effective user interface, designed to effortlessly facilitate user interaction. With a seamless interface, users can conveniently input various features related to loans, whether they are numerical or categorical in nature. Once the feature values are provided, our app leverages both regression and classification models to generate insightful predictions. For regression, users gain predictions on three crucial variables: 'ROI' (Return on Investment), 'EMI' (Equated Monthly Installment), and 'ELA_mean' (Expected Loan Amount mean). Meanwhile, the classification model outputs predictions on the 'Status' of the loan. Our Streamlit app empowers users to make informed decisions by swiftly and accurately obtaining these predictions, thus adding an extra layer of data-driven decision-making to the loan management process.
